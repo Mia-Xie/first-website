@@ -50,11 +50,12 @@
 
     <body>
 
+        {% include 'nav.html' %}
         <div class="text-center">
-            <h1 class="text-center mt-4 mb-4">{{company_name}} Jewlery</h1>
+            <h1 class="text-center mt-4 mb-4">{{company_name}} Jewelry</h1>
 
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-              <div class="container-fluid">
+<!--            <nav class="navbar navbar-expand-lg bg-body-tertiary">-->
+<!--              <div class="container-fluid">-->
 <!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">-->
 <!--                  <span class="navbar-toggler-icon"></span>-->
 <!--                </button>-->
@@ -62,57 +63,44 @@
 <!--                      <i class="fa fa-shopping-cart" style="font-size:48px;color:red"></i>-->
 <!--                    </a>-->
 
-                    <a class="navbar-brand" href="#">
-                      <i class="fas fa-shopping-cart" style="font-size:32px;"></i>
-                    </a>
+<!--                    <a class="navbar-brand" href="#">-->
+<!--                      <i class="fas fa-shopping-cart" style="font-size:32px;"></i>-->
+<!--                    </a>-->
 
-                  <form class="d-flex" role="search">
+<!--                  <form class="d-flex" role="search">-->
 
-                    <input class="search-bar form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success me-4" type="submit">Search</button>
-                      <a href="#">
-                        <button class="btn btn-outline-success" >Login</button>
-                      </a>
-                  </form>
+<!--                    <input class="search-bar form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                    <button class="btn btn-outline-success me-4" type="submit">Search</button>-->
+<!--                      <a href="#">-->
+<!--                        <button class="btn btn-outline-success" >Login</button>-->
+<!--                      </a>-->
+<!--                  </form>-->
 
-                </div>
-            </nav>
+<!--                </div>-->
+<!--            </nav>-->
 
-            <nav class="nav nav-pills flex-column flex-sm-row">
-              <a class="flex-sm-fill text-sm-center nav-link active bg-dark-subtle
- text-black" aria-current="page" href="#">Best Sellers</a>
-              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Earnings</a>
-              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Rings</a>
-              <a class="flex-sm-fill text-sm-center nav-link text-black"  href="#">Necklaces</a>
-              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Bracelets</a>
-                <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Sales</a>
-            </nav>
-<!--            <ul class="nav nav-tabs">-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link active" aria-current="page" href="#">Best Sellers</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Earnings</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Rings</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Necklaces</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Bracelets</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Sales</a>-->
-<!--              </li>-->
-<!--            </ul>-->
+<!--            <nav class="nav nav-pills flex-column flex-sm-row">-->
+<!--              <a class="flex-sm-fill text-sm-center nav-link active bg-dark-subtle-->
+<!-- text-black" aria-current="page" href="#">Best Sellers</a>-->
+<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Earnings</a>-->
+<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Rings</a>-->
+<!--              <a class="flex-sm-fill text-sm-center nav-link text-black"  href="#">Necklaces</a>-->
+<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Bracelets</a>-->
+<!--                <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Sales</a>-->
+<!--            </nav>-->
+
             <img class="img-fluid" id="banner" src="../static/carmen-lopez-oeFneUxJya4-unsplash.jpg">
             <h2 class="text-center mt-4 mb-4">About Us</h2>
-
-            <p class="lead">Posuere morbi leo urna molestie at elementum eu facilisis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Erat velit scelerisque in dictum non consectetur a. Ultrices vitae auctor eu augue ut lectus arcu bibendum. Fames ac turpis egestas sed tempus urna et. Nam libero justo laoreet sit amet cursus sit amet. Eu sem integer vitae justo eget magna fermentum iaculis. Elementum facilisis leo vel fringilla est ullamcorper. Lorem ipsum dolor sit amet consectetur adipiscing elit duis tristique. Id cursus metus aliquam eleifend mi in. Vel pretium lectus quam id leo in vitae turpis. Lectus proin nibh nisl condimentum id.
-            </p>
-
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="lead">
+                        Posuere morbi leo urna molestie at elementum eu facilisis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Erat velit scelerisque in dictum non consectetur a. Ultrices vitae auctor eu augue ut lectus arcu bibendum. Fames ac turpis egestas sed tempus urna et. Nam libero justo laoreet sit amet cursus sit amet. Eu sem integer vitae justo eget magna fermentum iaculis. Elementum facilisis leo vel fringilla est ullamcorper. Lorem ipsum dolor sit amet consectetur adipiscing elit duis tristique. Id cursus metus aliquam eleifend mi in. Vel pretium lectus quam id leo in vitae turpis. Lectus proin nibh nisl condimentum id.
+                    </p>
+                </div>
+                <div class="col-6 d-none d-md-block">
+                    <img src="../static/about us.jpg" style="height:320px;border-radius:4px">
+                </div>
+            </div>
             <h2 class="mt-4 mb-4">Trending Products</h2>
             <div>
                 {% for prod in products %}
@@ -120,11 +108,11 @@
                 {% endfor %}
             </div>
             <div>
-                <button class="btn btn-primary btn-lg">Contact US</button>
-                    <p class="mt-4">Copyright 2024</p>
+                {% include 'footer.html' %}
             </div>
 
         </div>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
     </body>
 </html>
