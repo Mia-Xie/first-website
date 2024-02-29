@@ -1,0 +1,29 @@
+<div class="border-bottom pt-2 pb-2 row">
+    <div class="col-8">
+
+    </div>
+    <div class="col-4">
+<!--        <h4 class="mt-2 mb-2"><b>{{prod['title']}}</h4>-->
+<!--        {% if prod['in stock']=='y' %}-->
+<!--        <div>{{prod['price']}}</div>-->
+<!--        {% else %}-->
+<!--        <div>Out of stock!</div>-->
+<!--        {% endif %}-->
+<!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
+         <div class="card" style="width: 18rem;">
+          <img src="static/p1.jpg" class="card-img-top rounded img-fluid" alt="..." width="100" height="100">
+          <div class="card-body">
+            <h5 class="card-title">{{prod['title']}}</h5>
+            <p class="card-text">Product description</p>
+              {% if prod['in stock']=='y' %}
+                <div>{{prod['price']}}</div>
+                <a href="#" class="btn btn-primary">Add to Cart</a>
+                {% else %}
+                <div>Out of stock!</div>
+              {% endif %}
+
+          </div>
+        </div>
+    </div>
+
+</div>

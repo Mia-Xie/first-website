@@ -42,16 +42,47 @@
     </head>
 
     <body>
+
         <div class="text-center">
-            <h1 class="text-center mt-4 mb-4">hello there</h1>
+            <h1 class="text-center mt-4 mb-4">{{company_name}} Jewlery</h1>
+
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+              <div class="container-fluid">
+<!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--                  <span class="navbar-toggler-icon"></span>-->
+<!--                </button>-->
+                  <a href="#">
+                      <i class="fa fa-shopping-cart" style="font-size:48px;color:red"></i>
+                  </a>
+
+                  <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+                </div>
+            </nav>
+
+            <nav class="nav nav-pills flex-column flex-sm-row">
+              <a class="flex-sm-fill text-sm-center nav-link active bg-dark-subtle
+ text-black" aria-current="page" href="#">Best Sellers</a>
+              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Earnings</a>
+              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Rings</a>
+              <a class="flex-sm-fill text-sm-center nav-link text-black"  href="#">Necklaces</a>
+              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Bracelets</a>
+                <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Sales</a>
+            </nav>
             <img class="img-fluid" id="banner" src="../static/carmen-lopez-oeFneUxJya4-unsplash.jpg">
             <h2 class="text-center mt-4 mb-4">About Us</h2>
 
             <p class="lead">Posuere morbi leo urna molestie at elementum eu facilisis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Erat velit scelerisque in dictum non consectetur a. Ultrices vitae auctor eu augue ut lectus arcu bibendum. Fames ac turpis egestas sed tempus urna et. Nam libero justo laoreet sit amet cursus sit amet. Eu sem integer vitae justo eget magna fermentum iaculis. Elementum facilisis leo vel fringilla est ullamcorper. Lorem ipsum dolor sit amet consectetur adipiscing elit duis tristique. Id cursus metus aliquam eleifend mi in. Vel pretium lectus quam id leo in vitae turpis. Lectus proin nibh nisl condimentum id.
             </p>
 
-            <h2 class="text-center mt-4 mb-4">Product List</h2>
-            <p class="bodytext"> TODO - show the product lists</p>
+            <h2 class="mt-4 mb-4">Product List</h2>
+            <div>
+                {% for prod in products %}
+                    {% include 'products.html' %}
+                {% endfor %}
+            </div>
             <div>
                 <button class="btn btn-primary btn-lg">Contact US</button>
                     <p class="mt-4">Copyright 2024</p>
