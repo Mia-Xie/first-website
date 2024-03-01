@@ -13,13 +13,13 @@
          <div class="card" style="width: 18rem;">
           <img src="static/p2.jpg" class="card-img-top rounded product-img" alt="..." width="100" height="100">
           <div class="card-body">
-            <h5 class="card-title">{{prod['title']}}</h5>
-            <p class="card-text">Product description</p>
-              {% if prod['in stock']=='y' %}
-                <div>{{prod['price']}}</div>
+            <h5 class="card-title">{{prod['product_name']}}</h5>
+            <p class="card-text fw-lighter">{{prod['description']}}</p>
+              {% if prod['stock_quantity']>0 %}
+                <div>${{prod['price']}}</div>
                 <a href="#" class="btn btn-primary">Add to Cart</a>
                 {% else %}
-                <div>Out of stock!</div>
+                <div>Out of Stock!</div>
               {% endif %}
 
           </div>
