@@ -11,13 +11,13 @@
 <!--        {% endif %}-->
 <!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
          <div class="card" style="width: 18rem;">
-          <img src="static/p2.jpg" class="card-img-top rounded product-img" alt="..." width="100" height="100">
+          <img src="static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img" alt="..." >
           <div class="card-body">
             <h5 class="card-title">{{prod['product_name']}}</h5>
             <p class="card-text fw-lighter">{{prod['description']}}</p>
               {% if prod['stock_quantity']>0 %}
                 <div>${{prod['price']}}</div>
-                <a href="#" class="btn btn-primary">Add to Cart</a>
+                <a href="/products/{{prod['product_id']}}" class="btn btn-primary">Add to Cart</a>
                 {% else %}
                 <div>Out of Stock!</div>
               {% endif %}
