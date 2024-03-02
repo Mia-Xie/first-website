@@ -10,10 +10,32 @@
             width: 420px; /* Adjust the width as needed */
         }
         .product-img{
-            width: 240px;
-            height: 240px;
+            width: 250px;
+            height: 250px;
         }
-        </style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap; /* This allows the items to wrap to the next line */
+            gap: 20px; /* Optional: Adds space between cards */
+            }
+
+        .card {
+            flex: 1; /* Allows the card to grow to fill available space */
+            min-width: 200px; /* Minimum width of a card. Adjust as needed */
+            /* Additional styling for your cards */
+            padding: 20px;
+            margin: 25px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .card p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+            </style>
 
     </head>
 
@@ -23,57 +45,22 @@
         <div class="text-center">
             <h1 class="text-center mt-4 mb-4">{{company_name}} Jewelry</h1>
 
-<!--            <nav class="navbar navbar-expand-lg bg-body-tertiary">-->
-<!--              <div class="container-fluid">-->
-<!--                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--                  <span class="navbar-toggler-icon"></span>-->
-<!--                </button>-->
-<!--                    <a href="#">-->
-<!--                      <i class="fa fa-shopping-cart" style="font-size:48px;color:red"></i>-->
-<!--                    </a>-->
-
-<!--                    <a class="navbar-brand" href="#">-->
-<!--                      <i class="fas fa-shopping-cart" style="font-size:32px;"></i>-->
-<!--                    </a>-->
-
-<!--                  <form class="d-flex" role="search">-->
-
-<!--                    <input class="search-bar form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--                    <button class="btn btn-outline-success me-4" type="submit">Search</button>-->
-<!--                      <a href="#">-->
-<!--                        <button class="btn btn-outline-success" >Login</button>-->
-<!--                      </a>-->
-<!--                  </form>-->
-
-<!--                </div>-->
-<!--            </nav>-->
-
-<!--            <nav class="nav nav-pills flex-column flex-sm-row">-->
-<!--              <a class="flex-sm-fill text-sm-center nav-link active bg-dark-subtle-->
-<!-- text-black" aria-current="page" href="#">Best Sellers</a>-->
-<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Earnings</a>-->
-<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Rings</a>-->
-<!--              <a class="flex-sm-fill text-sm-center nav-link text-black"  href="#">Necklaces</a>-->
-<!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Bracelets</a>-->
-<!--                <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Sales</a>-->
-<!--            </nav>-->
             {% include 'banner.html' %}
             <h2 class="text-center mt-4 mb-4">About Us</h2>
             <div class="row">
                 <div class="col-md-6" >
-                    <p class="lead text-center mt-4" style="margin-left:20%">
-                        Posuere morbi leo urna molestie at elementum eu facilisis. Pharetra et ultrices neque ornare aenean euismod elementum nisi quis. Erat velit scelerisque in dictum non consectetur a. Ultrices vitae auctor eu augue ut lectus arcu bibendum. Fames ac turpis egestas sed tempus urna et. Nam libero justo laoreet sit amet cursus sit amet. Eu sem integer vitae justo eget magna fermentum iaculis. Elementum facilisis leo vel fringilla est ullamcorper. Lorem ipsum dolor sit amet consectetur adipiscing elit duis tristique. Id cursus metus aliquam eleifend mi in. Vel pretium lectus quam id leo in vitae turpis. Lectus proin nibh nisl condimentum id.
-                    </p>
+                    <p class="lead text-center mt-4 mb-4" style="margin-left:20%">
+At AuroraOrnaments, we intertwine the artistry of timeless jewelry design with the luminescence of modern aesthetics. Our curated collections embody elegance and innovation. Each piece is crafted with meticulous attention to detail, using only the finest materials, ensuring that it not only adorns but also celebrates the unique beauty of its wearer. </p>
+                <p class="lead text-center mt-2" style="margin-left:20%">Our commitment to sustainability and ethical sourcing is at the heart of our mission, reflecting a deep respect for both our customers and the environment. AuroraOrnaments isn't just a brand; it's a testament to the enduring allure of high-quality jewelry that captures the imagination and ignites the soul.
+                </p>
                 </div>
                 <div class="col-6 d-none d-md-block">
                     <img src="../static/about us.jpg" style="height:380px;border-radius:4px">
                 </div>
             </div>
             <h2 class="mt-4 mb-4">Trending Products</h2>
-            <div>
-                {% for prod in products %}
-                    {% include 'products.html' %}
-                {% endfor %}
+            <div class="card-container">
+                {% include 'products.html' %}
             </div>
             <div>
                 {% include 'footer.html' %}
@@ -84,3 +71,4 @@
 
     </body>
 </html>
+

@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Check Out Successfully</title>
+    {% include 'bootstrap.html' %}
+</head>
+
+<body>
+{% include 'nav.html' %}
+<div class="text-center mt-4 display-5 fw-bold">
+    <p>Order submitted! Thank you {{checkout_info['firstName']}}, for shopping with us!</p>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

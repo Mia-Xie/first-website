@@ -44,8 +44,9 @@
 <!--          </li>-->
 
         </ul>
-           <a class="navbar-brand" href="#">
+           <a class="navbar-brand" href="/cart">
                       <i class="fas fa-shopping-cart" style="font-size:32px;"></i>
+                      <span class="top-0 start-100 translate-middlep badge rounded-pill text-bg-light">{{ session['cart']|length if session['cart'] else 0 }}</span>
             </a>
                   <form class="d-flex" role="search">
 
@@ -57,6 +58,14 @@
       </div>
     </div>
   </nav>
+
+<!--  <button type="button" class="btn btn-primary position-relative">-->
+<!--  Inbox-->
+<!--  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
+<!--    99+-->
+<!--    <span class="visually-hidden">unread messages</span>-->
+<!--  </span>-->
+<!--</button>-->
 <!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Earnings</a>-->
 <!--              <a class="flex-sm-fill text-sm-center nav-link text-black" href="#">Rings</a>-->
 <!--              <a class="flex-sm-fill text-sm-center nav-link text-black"  href="#">Necklaces</a>-->

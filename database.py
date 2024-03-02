@@ -31,3 +31,7 @@ def load_prod_from_db(product_id):
         else:
             return rows[0]._asdict()
 
+
+# def add_orders_to_db(checkout_info):
+
+
