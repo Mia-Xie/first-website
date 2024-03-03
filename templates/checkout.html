@@ -217,8 +217,8 @@
             <strong>${{total_price[3]}}</strong>
           </li>
         </ul>
-
-        <form class="card p-2">
+<!--need update here to store promo code-->
+        <form class="card p-2" >
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Promo code" name="promo_code">
             <button type="submit" class="btn btn-secondary">Redeem</button>
@@ -258,7 +258,7 @@
 <!--            </div>-->
 
             <div class="col-12">
-              <label for="email" class="form-label">Email <span class="text-body-secondary"></span></label>
+              <label for="email" class="form-label">Email </label>
               <input type="email" class="form-control" id="email" placeholder="you@example.com" name="email" required>
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
@@ -316,11 +316,13 @@
 
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="same-address" name="same_address">
+            <input type="hidden" name="same_address" value="no">
             <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
           </div>
 
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="save-info" name="save_info">
+            <input type="hidden" name="save_info" value="no">
             <label class="form-check-label" for="save-info">Save this information for next time</label>
           </div>
 
@@ -384,9 +386,12 @@
         </form>
       </div>
     </div>
-  </main>
 
-  {% include 'footer.html' %}
+  </main>
+    <div>
+      {% include 'footer.html' %}
+    </div>
+
 </div>
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 

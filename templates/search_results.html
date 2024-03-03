@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'bootstrap.html' %}
+        <title> {{category}} </title>
+        <style>
+
+
+        .search-bar {
+            width: 420px; /* Adjust the width as needed */
+        }
+        .product-img{
+            width: 250px;
+            height: 250px;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap; /* This allows the items to wrap to the next line */
+            gap: 20px; /* Optional: Adds space between cards */
+            }
+
+        .card {
+            flex: 1; /* Allows the card to grow to fill available space */
+            min-width: 200px; /* Minimum width of a card. Adjust as needed */
+            /* Additional styling for your cards */
+            padding: 20px;
+            margin: 25px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .card p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+            </style>
+
+    </head>
+
+    <body>
+
+        {% include 'nav.html' %}
+        <div class="text-center">
+            <h1 class="text-center mt-4 mb-4">{{company_name}} Jewelry</h1>
+
+            {% include 'banner.html' %}
+            <h2 class="mt-4 mb-4">{{category}}</h2>
+            <div class="card-container">
+                {% for prod in category_prod %}
+                    <div class="border-bottom pt-2 pb-2 row">
+    <!--    <div class="col-8">-->
+
+    <!--    </div>-->
+        <div class="col-4">
+    <!--        <h4 class="mt-2 mb-2"><b>{{prod['title']}}</h4>-->
+    <!--        {% if prod['in stock']=='y' %}-->
+    <!--        <div>{{prod['price']}}</div>-->
+    <!--        {% else %}-->
+    <!--        <div>Out of stock!</div>-->
+    <!--        {% endif %}-->
+    <!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
+             <div class="card" style="width: 18rem;">
+              <img src="../static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img .img-fluid" alt="..." >
+              <div class="card-body">
+                <h5 class="card-title">
+                    <a href="/products/{{prod['product_id']}}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover " >{{prod['product_name']}}</a>
+                </h5>
+                <p id="text{{ loop.index }}" class="card-text fw-lighter">{{prod['description']}}</p>
+                  <button onclick="toggleText({{ loop.index }})" id="toggleButton{{ loop.index }}" class="btn btn-sm">Show More</button>
+
+                  {% if prod['stock_quantity']>0 %}
+                    <div>${{prod['price']}}</div>
+                    <button onclick="location.href='/add_to_cart/{{prod['product_id']}}'" class="btn btn-dark rounded-pill py-2 btn-block">Add to Cart</button>
+                    {% else %}
+                    <div>Out Of Stock!</div>
+                    <button onclick="location.href='/add_to_cart/{{prod['product_id']}}'" class="btn btn-dark rounded-pill py-2 btn-block disabled">Add to Cart</button>
+                  {% endif %}
+
+              </div>
+            </div>
+        </div>
+
+    </div>
+                {% endfor %}
+
+                <script>
+                    function toggleText(index) {
+                        var text = document.getElementById("text" + index);
+                        var toggleButton = document.getElementById("toggleButton" + index);
+
+                        if (text.style.display === "block") {
+                            text.style.display = "-webkit-box"; // Reset to default
+                            toggleButton.innerHTML = "Show More";
+                        } else {
+                            text.style.display = "block"; // Show full text
+                            toggleButton.innerHTML = "Show Less";
+                        }
+                    }
+                    </script>
+            </div>
+            <div>
+                {% include 'footer.html' %}
+            </div>
+
+        </div>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>

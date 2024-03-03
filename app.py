@@ -1,5 +1,5 @@
 from flask import Flask,render_template, jsonify, request,session,redirect,url_for
-from database import engine, load_prods_from_db,load_prod_from_db
+from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db
 import os
 
 
@@ -46,6 +46,47 @@ def show_products(product_id):
         return render_template('productpage.html',
                                prod=product,
                                company_name='AuroraOrnaments')
+
+@app.route('/categories/<category>')
+def show_category(category):
+    category_prod = load_category_from_db(category)
+
+    if not category_prod:
+        # print(f"No products found for category: {category}")
+        return f"Not Found Category:{category}", 404
+    else:
+        return render_template('categorypage.html',
+                               category=category,
+                               category_prod=category_prod,
+                               company_name='AuroraOrnaments')
+
+@app.route('/<prod_type>')
+def show_special(prod_type):
+    special_prod = load_special_from_db(prod_type)
+
+    if not special_prod:
+        # print(f"No products found for category: {category}")
+        return f"Not Found Category:{prod_type}", 404
+    else:
+        return render_template('special_products.html',
+                               prod_type=prod_type,
+                               special_prod=special_prod,
+                               company_name='AuroraOrnaments')
+
+
+
+@app.route('/search')
+def search():
+    query = request.args.get('query', '')  # Get the search query from the request
+    # Perform search logic here, for example, query your database
+    # For demonstration, let's assume we have a list of items to search through
+    items = ['Item 1', 'Item 2', 'Search Item', 'Another Item']
+    # Filter items based on the query
+    results = [item for item in items if query.lower() in item.lower()]
+    # Return the search results to the user
+    return render_template('search_results.html',
+                           query=query,
+                           results=results)
 
 @app.route('/login')
 def login():
@@ -121,10 +162,14 @@ def checkout():
 @app.route('/checkout/status',methods=['post'])
 def checkout_status():
     # STORE TO DB
-    # DISPLAY AN ACKNOWLEDGE
+
     data = request.form
+    add_orders_to_db(data)
+    # DISPLAY AN ACKNOWLEDGE
     return render_template('checkout_successfully.html',
                            checkout_info=data)
+    # return jsonify(data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
