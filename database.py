@@ -100,3 +100,15 @@ def add_orders_to_db(checkout_info):
                         # 'promo_code':checkout_info['promo_code']
             }
         )
+
+def search_product(search_term):
+    with engine.connect() as conn:
+        result = conn.execute(
+                text("select * from inventory where product_name LIKE :val OR description LIKE :val"),
+            {"val": "%{}%".format(search_term)}
+                )
+
+        rows = result.all()
+        searched_items_dicts = [r._asdict() for r in rows]
+
+        return searched_items_dicts

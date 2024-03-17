@@ -2,7 +2,7 @@
 <html>
     <head>
         {% include 'bootstrap.html' %}
-        <title> {{category}} </title>
+        <title> Search Result </title>
         <style>
 
 
@@ -46,9 +46,10 @@
             <h1 class="text-center mt-4 mb-4">{{company_name}} Jewelry</h1>
 
             {% include 'banner.html' %}
-            <h2 class="mt-4 mb-4">{{category}}</h2>
-            <div class="card-container">
-                {% for prod in category_prod %}
+            <h2 class="mt-4 mb-4">Search Result</h2>
+            {% if searched_items_dicts %}
+                <div class="card-container">
+                {% for prod in searched_items_dicts %}
                     <div class="border-bottom pt-2 pb-2 row">
     <!--    <div class="col-8">-->
 
@@ -100,6 +101,9 @@
                     }
                     </script>
             </div>
+            {% else %}
+                <p>No results found for "{{ search_term }}"</p>
+            {% endif %}
             <div>
                 {% include 'footer.html' %}
             </div>

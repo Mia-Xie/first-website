@@ -1,5 +1,5 @@
 from flask import Flask,render_template, jsonify, request,session,redirect,url_for
-from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db
+from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db,search_product
 import os
 
 
@@ -77,16 +77,12 @@ def show_special(prod_type):
 
 @app.route('/search')
 def search():
-    query = request.args.get('query', '')  # Get the search query from the request
-    # Perform search logic here, for example, query your database
-    # For demonstration, let's assume we have a list of items to search through
-    items = ['Item 1', 'Item 2', 'Search Item', 'Another Item']
-    # Filter items based on the query
-    results = [item for item in items if query.lower() in item.lower()]
-    # Return the search results to the user
+    search_term = request.args.get('search_term')
+    searched_items_dicts = search_product(search_term)
+
     return render_template('search_results.html',
-                           query=query,
-                           results=results)
+                           searched_items_dicts=searched_items_dicts,
+                           search_term=search_term)
 
 @app.route('/login')
 def login():
@@ -169,6 +165,7 @@ def checkout_status():
     return render_template('checkout_successfully.html',
                            checkout_info=data)
     # return jsonify(data)
+
 
 
 if __name__ == '__main__':
