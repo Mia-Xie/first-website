@@ -1,8 +1,9 @@
-from flask import Flask,render_template, jsonify, request,session,redirect,url_for
-from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db,search_product
+from flask import Flask,render_template, jsonify, request,session,redirect,url_for,flash
+from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db,search_product, wishlist_exist_item, wishlist_insert_itme
 import os
 
 
+app = Flask(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'optional_default_secret_key')
 # PROD = [
@@ -131,6 +132,7 @@ def remove_from_cart(product_id):
         session['cart'] = [item for item in session['cart'] if item != product_id]
         session.modified = True  # Inform Flask that the session has been modified
     return redirect(url_for('shopping_cart'))
+
 @app.route('/checkout')
 def checkout():
     cart_items_list = session.get('cart', [])
@@ -166,6 +168,21 @@ def checkout_status():
                            checkout_info=data)
     # return jsonify(data)
 
+
+@app.route('/add_to_wishlist/<int:product_id>', methods=['POST'])
+def add_to_wishlist(product_id):
+    user_id = session.get('user_id')
+    if not user_id:
+        # Handle the case where the user is not logged in
+        flash('You need to login first', 'warning')
+        return redirect(url_for('login'))
+
+    check_result = wishlist_exist_item(user_id, product_id)
+
+    if check_result:
+        flash('Item already in wishlist', 'info')
+    else:
+        wishlist_insert_itme(user_id, product_id)
 
 
 if __name__ == '__main__':

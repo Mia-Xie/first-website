@@ -1,3 +1,5 @@
+
+
 {% for prod in products %}
 
     <div class="border-bottom pt-2 pb-2 row">
@@ -14,6 +16,9 @@
     <!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
              <div class="card" style="width: 18rem;">
               <img src="../static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img .img-fluid" alt="..." >
+               <form action="{{ url_for('add_to_wishlist', product_id=prod['product_id']) }}" method="post">
+                        <button type="submit" class="btn"> <i class="fa fa-heart-o mt-2 sticky-md-top" onclick="add_to_wishlist(product_id);" style="font-size:36px;color:black"></i></button>
+               </form>
               <div class="card-body">
                 <h5 class="card-title">
                     <a href="/products/{{prod['product_id']}}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover " >{{prod['product_name']}}</a>
@@ -23,7 +28,9 @@
 
                   {% if prod['stock_quantity']>0 %}
                     <div>${{prod['price']}}</div>
+
                     <button onclick="location.href='/add_to_cart/{{prod['product_id']}}'" class="btn btn-dark rounded-pill py-2 btn-block">Add to Cart</button>
+
                     {% else %}
                     <div>Out Of Stock!</div>
                     <button onclick="location.href='/add_to_cart/{{prod['product_id']}}'" class="btn btn-dark rounded-pill py-2 btn-block disabled">Add to Cart</button>

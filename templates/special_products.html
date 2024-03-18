@@ -63,6 +63,9 @@
     <!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
              <div class="card" style="width: 18rem;">
               <img src="../static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img .img-fluid" alt="..." >
+                <a href="/">
+                    <i class="fa fa-heart-o mt-2 sticky-md-top" onclick="addToWishlist(productId);" style="font-size:36px;color:black"></i>
+                </a>
               <div class="card-body">
                 <h5 class="card-title">
                     <a href="/products/{{prod['product_id']}}" class="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover " >{{prod['product_name']}}</a>

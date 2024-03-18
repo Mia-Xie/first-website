@@ -112,3 +112,41 @@ def search_product(search_term):
         searched_items_dicts = [r._asdict() for r in rows]
 
         return searched_items_dicts
+
+
+    # Query to check if the product is already in the wishlist
+def wishlist_exist_item(user_id, product_id):
+    with engine.connect() as conn:
+        result = conn.execute(
+                text("SELECT 1 FROM WishlistItems a left join Wishlists b using(Wishlist_ID) WHERE b.Customer_ID = :val1 AND a.Product_ID = :val2"),
+            {"val1": user_id,
+                        "val2": product_id}
+                )
+
+        rows = result.all()
+        return rows
+
+    # Insert the product into the WishlistItems table
+def wishlist_insert_itme(user_id, product_id):
+    with engine.connect() as conn:
+        wishlist_check = conn.execute(
+                text("SELECT 1 FROM Wishlists WHERE Customer_ID = :val1"),
+            {"val1": user_id}
+                )
+
+        if wishlist_check.all():
+            rows = wishlist_check.all()
+            wishlist_check_dicts = [r._asdict() for r in rows]
+            wishlist_id = rows["Wishlist_ID"]
+
+            conn.execute(
+                    text("INSERT INTO WishlistItems (Wishlist_ID,Product_ID) VALUES (:wishlist_id,:prod_id)"),
+                {"wishlist_id": wishlist_id,
+                            "prod_id":product_id}
+                    )
+        else:
+            conn.execute(
+                    text("INSERT INTO Wishlists (CustomerID) VALUES (:val1)"),
+                {"val1": user_id}
+                    )
+
