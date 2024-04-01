@@ -133,11 +133,10 @@ def wishlist_insert_itme(user_id, product_id):
                 text("SELECT 1 FROM Wishlists WHERE Customer_ID = :val1"),
             {"val1": user_id}
                 )
-
-        if wishlist_check.all():
-            rows = wishlist_check.all()
+        rows = wishlist_check.all()
+        if rows:
             wishlist_check_dicts = [r._asdict() for r in rows]
-            wishlist_id = rows["Wishlist_ID"]
+            wishlist_id = wishlist_check_dicts[0]["Wishlist_ID"]
 
             conn.execute(
                     text("INSERT INTO WishlistItems (Wishlist_ID,Product_ID) VALUES (:wishlist_id,:prod_id)"),
@@ -146,7 +145,46 @@ def wishlist_insert_itme(user_id, product_id):
                     )
         else:
             conn.execute(
-                    text("INSERT INTO Wishlists (CustomerID) VALUES (:val1)"),
+                    text("INSERT INTO Wishlists (Customer_ID) VALUES (:val1)"),
                 {"val1": user_id}
                     )
 
+            conn.execute(
+                    text("INSERT INTO WishlistItems (Wishlist_ID,Product_ID) VALUES (:wishlist_id,:prod_id)"),
+                {"wishlist_id": wishlist_id,
+                            "prod_id":product_id}
+                    )
+
+# def user_loader_by_id(user_id):
+#     with engine.connect() as conn:
+#         user = conn.execute(
+#                 text("SELECT * FROM Customer WHERE Customer_ID = :val1"),
+#             {"val1": user_id}
+#         )
+#         if user.all():
+#             rows = user.all()
+#             user_info = [r._asdict() for r in rows]
+#             return user_info
+
+def user_loader_by_name(username):
+    with engine.connect() as conn:
+        user = conn.execute(
+                text("SELECT * FROM Customer WHERE User_Name = :val"),
+            {"val": username}
+        )
+        # print(user.all())
+        # print(len(user.all()))
+        users = user.all()
+        if users:
+            user_info = [r._asdict() for r in users]
+            return user_info
+
+def insert_new_user(username, password_hash, email,phone):
+    with engine.connect() as conn:
+            conn.execute(
+                    text("INSERT INTO Customer (User_Name,Password,Email,Phone) VALUES (:username, :password_hash, :email,:phone)"),
+                {"username": username,
+                            "password_hash": password_hash,
+                            "email": email,
+                            "phone": phone}
+                    )
