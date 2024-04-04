@@ -79,27 +79,52 @@ def load_special_from_db(prod_type):
         special_items_dicts = [r._asdict() for r in rows]
         return special_items_dicts
 
-def add_orders_to_db(checkout_info):
+def add_orders_to_db(user_id, checkout_info,total_price,cart_items):
     with engine.connect() as conn:
-        query = text("insert into orders_details_raw (first_name,	last_name,	email,	address1,	address2,	state,	zip_code,	country,	same_address,	save_info,	payment_method,	promo_code) values (:first_name,	:last_name,	:email,	:address1,	:address2,	:state,	:zip_code,	:country,	:same_address,	:save_info,	:payment_method, 'na')")
+        # ## check coupon
+        # result = conn.execute(
+        #     text("select * from inventory where best_seller_flag = 'y'")
+        #
+        query = text("insert into Orders (Customer_ID,	Total_Amount,	Status,	Used_Coupon,	Coupon_ID) values (:Customer_ID,	:Total_Amount,	:Status,	:Used_Coupon,	:Coupon_ID)")
 
-        conn.execute(
+        promo_code = None
+        coupon_status = 0
+        if promo_code:
+            coupon_status = 1
+
+        result = conn.execute(
             query,
             {
-                        'first_name':checkout_info['firstName'],
-                        'last_name':checkout_info['lastName'],
-                        'email':checkout_info['email'],
-                        'address1':checkout_info['address1'],
-                        'address2':checkout_info['address2'],
-                        'state':checkout_info['state'],
-                        'zip_code':checkout_info['zip_code'],
-                        'country':checkout_info['country'],
-                        'same_address':checkout_info['same_address'],
-                        'save_info':checkout_info['save_info'],
-                        'payment_method':checkout_info['paymentMethod']
-                        # 'promo_code':checkout_info['promo_code']
+                        'Customer_ID':user_id,
+                        'Total_Amount':total_price,
+                        'Status':1,
+                        'Used_Coupon':coupon_status,
+                        'Coupon_ID':promo_code
             }
         )
+
+        order_id = int(result.lastrowid)
+
+
+
+        for k,v in cart_items.items():
+            prod = conn.execute(
+                text("select * from inventory where product_id = :val"),
+                {"val": k}
+            )
+            prods = prod.all()
+
+            prods_dicts = [r._asdict() for r in prods]
+
+            conn.execute(
+                text("INSERT INTO OrderItems (Order_ID,Product_ID,Quantity,Unit_Price,Total_Price) VALUES (:Order_ID,:Product_ID,:Quantity,:Unit_Price,:Total_Price)"),
+                {"Order_ID": order_id,
+                 "Product_ID": k,
+                 "Quantity": v,
+                 "Unit_Price": prods_dicts[0]['price'],
+                 "Total_Price":round(prods_dicts[0]['price']*v,2)
+                 }
+            )
 
 def search_product(search_term):
     with engine.connect() as conn:
@@ -126,11 +151,24 @@ def wishlist_exist_item(user_id, product_id):
         rows = result.all()
         return rows
 
+def wishlist_items(user_id):
+    with engine.connect() as conn:
+        result = conn.execute(
+            text(
+                "select * from inventory where Product_ID in (SELECT Product_ID FROM WishlistItems where Wishlist_ID in (select Wishlist_ID from Wishlists where Customer_ID = :val1 ))"),
+            {"val1": user_id}
+        )
+
+        rows = result.all()
+        wishlist_dicts = [r._asdict() for r in rows]
+
+        return wishlist_dicts
+
     # Insert the product into the WishlistItems table
 def wishlist_insert_itme(user_id, product_id):
     with engine.connect() as conn:
         wishlist_check = conn.execute(
-                text("SELECT 1 FROM Wishlists WHERE Customer_ID = :val1"),
+                text("SELECT * FROM Wishlists WHERE Customer_ID = :val1"),
             {"val1": user_id}
                 )
         rows = wishlist_check.all()
@@ -149,6 +187,15 @@ def wishlist_insert_itme(user_id, product_id):
                 {"val1": user_id}
                     )
 
+            wishlist_check = conn.execute(
+                text("SELECT * FROM Wishlists WHERE Customer_ID = :val1"),
+                {"val1": user_id}
+            )
+
+            rows = wishlist_check.all()
+
+            wishlist_check_dicts = [r._asdict() for r in rows]
+            wishlist_id = wishlist_check_dicts[0]["Wishlist_ID"]
             conn.execute(
                     text("INSERT INTO WishlistItems (Wishlist_ID,Product_ID) VALUES (:wishlist_id,:prod_id)"),
                 {"wishlist_id": wishlist_id,

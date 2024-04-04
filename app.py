@@ -1,8 +1,8 @@
 from flask import Flask,render_template, jsonify, request,session,redirect,url_for,flash
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, UserMixin, login_user, current_user
+from flask_login import LoginManager, UserMixin, login_user, current_user,logout_user
 from werkzeug.security import check_password_hash
-from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db,search_product, wishlist_exist_item, wishlist_insert_itme,user_loader_by_name,insert_new_user
+from database import engine, load_prods_from_db,load_prod_from_db,load_category_from_db,load_special_from_db,add_orders_to_db,search_product, wishlist_exist_item, wishlist_insert_itme,wishlist_items,user_loader_by_name,insert_new_user
 import os
 
 
@@ -44,9 +44,16 @@ def user_loader(user_id):
 @app.route('/')
 def hello_auroraornaments():
     products = load_prods_from_db()
+    wishlist_statuses = {}
+
+    if current_user.is_authenticated:
+        for product in products:
+            wishlist_statuses[product['product_id']] = wishlist_exist_item(current_user.get_id(), product['product_id'])
+
     return render_template('home.html',
                            products=products,
-                           company_name='AuroraOrnaments')
+                           company_name='AuroraOrnaments',
+                           wishlist_statuses=wishlist_statuses)
 
 @app.route('/api/products')
 def list_products():
@@ -72,10 +79,17 @@ def show_category(category):
         # print(f"No products found for category: {category}")
         return f"Not Found Category:{category}", 404
     else:
+        wishlist_statuses = {}
+
+        if current_user.is_authenticated:
+            for product in category_prod:
+                wishlist_statuses[product['product_id']] = wishlist_exist_item(current_user.get_id(),
+                                                                               product['product_id'])
         return render_template('categorypage.html',
                                category=category,
                                category_prod=category_prod,
-                               company_name='AuroraOrnaments')
+                               company_name='AuroraOrnaments',
+                               wishlist_statuses=wishlist_statuses)
 
 @app.route('/<prod_type>')
 def show_special(prod_type):
@@ -129,6 +143,11 @@ def login():
             # Optionally, you can redirect them to the registration page
             return redirect(url_for('register'))
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))  # Redirect to the login page
 
 @app.route('/register',methods=['GET', 'POST'])
 def register():
@@ -201,6 +220,14 @@ def remove_from_cart(product_id):
 
 @app.route('/checkout')
 def checkout():
+
+    if not current_user.is_authenticated:
+        # Handle the case where the user is not logged in
+        flash('You need to login first', 'warning')
+        return redirect(url_for('login'))
+
+    # user_id = current_user.get_id()
+
     cart_items_list = session.get('cart', [])
     products = load_prods_from_db()
 
@@ -216,6 +243,12 @@ def checkout():
             cart_items[prod] = 1
             total_price+=products[prod - 1]['price']
 
+    # After calculating total_price and other details
+    session['checkout_summary'] = {
+        'total_price': round(total_price+total_price*0.06675,2)+10,
+        'cart_items': cart_items  # Assuming this is a summary like {product_id: quantity}
+        # Add other details as necessary
+    }
     return render_template('checkout.html',
                            cart_items=cart_items,
                            products=products,
@@ -225,11 +258,27 @@ def checkout():
 
 @app.route('/checkout/status',methods=['post'])
 def checkout_status():
+    if not current_user.is_authenticated:
+        # Handle the case where the user is not logged in
+        flash('You need to login first', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = current_user.get_id()
+
     # STORE TO DB
+    checkout_summary = session.get('checkout_summary', {})
+    total_price = checkout_summary.get('total_price', 0)
+    cart_items = checkout_summary.get('cart_items', {})
 
     data = request.form
-    add_orders_to_db(data)
+    add_orders_to_db(user_id,data,total_price,cart_items)
     # DISPLAY AN ACKNOWLEDGE
+
+    session['cart'] = []  # Assuming the cart items are stored in a list
+    session.modified = True  # Ensure the session is marked as modified
+
+    flash('Checkout successful. Thank you for your purchase!')
+
     return render_template('checkout_successfully.html',
                            checkout_info=data)
     # return jsonify(data)
@@ -251,6 +300,31 @@ def add_to_wishlist(product_id):
     else:
         wishlist_insert_itme(user_id, product_id)
     return redirect(url_for('hello_auroraornaments'))
+
+@app.route('/wishlist')
+def show_wishlist():
+    if not current_user.is_authenticated:
+        # Handle the case where the user is not logged in
+        flash('You need to login first', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = current_user.get_id()
+    wishlist = wishlist_items(int(user_id))
+
+    if not wishlist_items:
+        # print(f"No products found for category: {category}")
+        return "No Items in Wishlist", 404
+    else:
+        wishlist_statuses = {}
+        if current_user.is_authenticated:
+            for product in wishlist:
+                wishlist_statuses[product['product_id']] = wishlist_exist_item(user_id,
+                                                                               product['product_id'])
+        return render_template('categorypage.html',
+                               category="My Wishlist",
+                               category_prod=wishlist,
+                               company_name='AuroraOrnaments',
+                               wishlist_statuses=wishlist_statuses)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)

@@ -64,7 +64,7 @@
              <div class="card" style="width: 18rem;">
               <img src="../static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img .img-fluid" alt="..." >
                 <a href="/">
-                        <i class="fa fa-heart-o mt-2 sticky-md-top" onclick="addToWishlist(productId);" style="font-size:36px;color:black"></i>
+                        <i class="fa {{ 'fa-heart' if wishlist_statuses[prod['product_id']] else 'fa-heart-o' }} mt-2 sticky-md-top" onclick="addToWishlist(productId);" style="font-size:36px;color:black"></i>
                     </a>
               <div class="card-body">
                 <h5 class="card-title">

@@ -16,8 +16,9 @@
     <!--        <button type="button" class="btn btn-outline-primary">Add to Cart</button>-->
              <div class="card" style="width: 18rem;">
               <img src="../static/p{{prod['product_id']}}.jpg" class="card-img-top rounded product-img .img-fluid" alt="..." >
+
                <form action="{{ url_for('add_to_wishlist', product_id=prod['product_id']) }}" method="post">
-                        <button type="submit" class="btn"> <i class="fa fa-heart-o mt-2 sticky-md-top" onclick="add_to_wishlist(product_id);" style="font-size:36px;color:black"></i></button>
+                        <button type="submit" class="btn"> <i class="fa {{ 'fa-heart' if wishlist_statuses[prod['product_id']] else 'fa-heart-o' }} mt-2 sticky-md-top" onclick="add_to_wishlist(product_id);" style="font-size:36px;color:black"></i></button>
                </form>
               <div class="card-body">
                 <h5 class="card-title">
